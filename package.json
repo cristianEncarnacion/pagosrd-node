@@ -1,0 +1,63 @@
+{
+  "name": "@pagosrd/node",
+  "version": "0.1.1",
+  "description": "Cliente oficial de PagosRD para Node.js: links de cobro, pagos, reembolsos y verificación de webhooks.",
+  "license": "MIT",
+  "author": "Cristian Encarnación",
+  "homepage": "https://github.com/cristianEncarnacion/pagosrd-node#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cristianEncarnacion/pagosrd-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cristianEncarnacion/pagosrd-node/issues"
+  },
+  "keywords": [
+    "pagosrd",
+    "pagos",
+    "republica-dominicana",
+    "azul",
+    "cardnet",
+    "links-de-cobro",
+    "webhooks",
+    "suscripciones"
+  ],
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run build && npm test"
+  },
+  "sideEffects": false,
+  "devDependencies": {
+    "@types/node": "^22.20.5",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^5.0.5"
+  }
+}
