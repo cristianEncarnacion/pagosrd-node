@@ -68,6 +68,14 @@ describe("cliente", () => {
     expect(canceled.status).toBe("canceled");
   });
 
+  it("adelanta el siguiente cobro de una suscripción (solo en prueba)", async () => {
+    const f = fakeFetch([json(200, { id: "sub_1", status: "active" })]);
+    const client = new PagosRD("sk_test_abc", { fetch: f.fn });
+    await client.subscriptions.advance("sub_1");
+    expect(f.calls[0]!.url).toBe("https://api.pagosrd.com/v1/subscriptions/sub_1/advance");
+    expect(f.calls[0]!.init.method).toBe("POST");
+  });
+
   it("reintenta un POST tras un 503 con la MISMA llave de idempotencia", async () => {
     const f = fakeFetch([json(503, { detail: "caído" }), json(201, { id: "re_1" })]);
     const client = new PagosRD("sk_test_abc", { fetch: f.fn, maxRetries: 2 });

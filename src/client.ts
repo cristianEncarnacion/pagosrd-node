@@ -136,6 +136,11 @@ export class PagosRD {
     /** Reintenta ya el cobro de una suscripción past_due o unpaid con la misma tarjeta. */
     retry: (id: string) => this.post<Subscription>(`/v1/subscriptions/${enc(id)}/retry`, undefined),
     cancel: (id: string) => this.post<Subscription>(`/v1/subscriptions/${enc(id)}/cancel`, undefined),
+    /**
+     * Solo con una llave de prueba: el siguiente cobro sale en el próximo minuto, sin esperar su fecha.
+     * Para probar los cobros recurrentes y sus webhooks. El calendario no cambia.
+     */
+    advance: (id: string) => this.post<Subscription>(`/v1/subscriptions/${enc(id)}/advance`, undefined),
   };
 
   readonly refunds = {
