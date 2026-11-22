@@ -1,6 +1,6 @@
 {
   "name": "@pagosrd/node",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Cliente oficial de PagosRD para Node.js: links de cobro, pagos, reembolsos y verificación de webhooks.",
   "license": "MIT",
   "author": "Cristian Encarnación",

@@ -171,7 +171,7 @@ export interface Subscription {
   start_at: string;
   total_charges: number | null;
   charges_count: number;
-  /** active al día; past_due reintentando; unpaid sin más reintentos (reactívala con retry o cambiando la tarjeta); canceled; completed. */
+  /** active al día; past_due reintentando; unpaid sin más reintentos (reactívala con retry o cambiando la tarjeta; con AZUL el primer rechazo ya la deja unpaid); canceled; completed. */
   status: SubscriptionStatus;
   next_charge_at: string | null;
   failed_attempts: number;
@@ -181,8 +181,23 @@ export interface Subscription {
   pending_payment_id: string | null;
   last_payment_id: string | null;
   last_failure: { code: string; message: string | null } | null;
+  /** Consentimiento del cliente registrado al crearla. null si no se envió (solo posible en prueba). */
+  consent: SubscriptionConsent | null;
   canceled_at: string | null;
   created_at: string;
+}
+
+export type ConsentChannel = "web" | "app" | "paper" | "panel" | "other";
+
+/** Evidencia de que el cliente aceptó la serie de cobros: monto, frecuencia y duración. */
+export interface SubscriptionConsent {
+  /** El texto que aceptó el cliente (20 a 2000 caracteres). */
+  text: string;
+  /** ISO 8601. Cuándo lo aceptó. */
+  accepted_at: string;
+  /** IP desde la que lo aceptó, si fue en línea. */
+  ip: string | null;
+  channel: ConsentChannel;
 }
 
 export interface CreateSubscriptionParams {
@@ -196,11 +211,13 @@ export interface CreateSubscriptionParams {
   interval: "week" | "month";
   /** Cada cuántos intervalos (por defecto 1). */
   interval_count?: number;
-  /** Por defecto subscription (monto fijo). installment exige total_charges. */
+  /** Por defecto subscription (monto fijo). installment exige total_charges y no está disponible con AZUL (409 cuotas_no_disponibles). */
   kind?: RecurringType;
   total_charges?: number | null;
   /** ISO 8601. Fecha del primer cobro; por defecto, ahora. */
   start_at?: string | null;
+  /** Obligatorio en vivo: lo que aceptó el cliente (monto, frecuencia y duración). Guárdalo también en tu sistema al menos 2 años. */
+  consent?: { text: string; accepted_at: string; ip?: string | null; channel?: ConsentChannel } | null;
 }
 
 export interface UpdateSubscriptionParams {

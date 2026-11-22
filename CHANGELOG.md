@@ -1,5 +1,10 @@
 # Cambios
 
+## 0.1.3 (21-nov-2026)
+
+- `subscriptions.create` acepta `consent` (texto que aceptó el cliente, `accepted_at`, `ip` y `channel`), y `Subscription.consent` lo devuelve. En vivo es obligatorio: sin él, la API responde 422.
+- Documentado: con AZUL un cobro recurrente rechazado no se reintenta solo (la suscripción queda `unpaid`) y los planes en cuotas (`installment`) responden 409 `cuotas_no_disponibles`.
+
 ## 0.1.2 (15-nov-2026)
 
 - `subscriptions.advance(id)`: solo con una llave de prueba, el siguiente cobro de una suscripción sale en el próximo minuto sin esperar su fecha (para probar los cobros recurrentes y sus webhooks).
